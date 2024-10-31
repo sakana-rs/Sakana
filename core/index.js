@@ -1,5 +1,8 @@
 class Sakana {
-  constructor() {
+  constructor(id) {
+    this.canvas = document.getElementById(id);
+  }
+  load() {
     // Code :3
   }
 }

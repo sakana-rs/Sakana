@@ -1,7 +1,7 @@
 import Decode from './decode.js'
 import Runner from './run.js'
 
-export class Sakana {
+export default class Sakana {
   constructor(id) {
     // Game canvas
     const canvas = document.getElementById(id);

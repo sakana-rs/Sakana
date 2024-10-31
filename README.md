@@ -1,2 +1,5 @@
+> [!IMPORTANT]
+> Sakana is not affiliated with Nintendo :tm: or Switch :tm:
+
 # Sakana
-Web based Nintendo Switch emulator
+Web based Switch emulator

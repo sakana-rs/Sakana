@@ -1,4 +1,4 @@
-export default function Decode(file) {
+export function Decode(file) {
   const reader = new FileReader();
   reader.onload = (evt) => {
     return evt.target.result

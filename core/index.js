@@ -7,6 +7,8 @@ export class Sakana {
     this.game = null;
   }
   load(file) {
-    Runner.run(Decoder(file), this)
+    let runner = new Runner(this);
+    this.game = runner;
+    runner.run(Decoder(file))
   }
 }

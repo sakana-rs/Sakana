@@ -19,7 +19,7 @@ export class Runner {
   }
   run(code) {
     const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
-    const _this  this;
+    const _this = this;
     setInterval(function(){
       if (_this.loading) {
         _this.drawTextScreen('Sakana\nLoading...');

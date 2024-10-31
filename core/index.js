@@ -1,4 +1,4 @@
-import Decoder from './decode.js'
+import Decode from './decode.js'
 import Runner from './run.js'
 
 export class Sakana {
@@ -17,6 +17,6 @@ export class Sakana {
   load(file) {
     let runner = new Runner(this);
     this.game = runner;
-    runner.run(Decoder(file))
+    runner.run(Decode(file))
   }
 }

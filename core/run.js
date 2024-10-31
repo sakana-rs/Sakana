@@ -18,7 +18,7 @@ export class Runner {
     this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2);
   }
   run(code) {
-    const msperframe = (1 / this.framerate) * 1000; // Convert from FPS to MsPF (Miliseconds per Frame)
+    const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
     setInterval(function(){
       if (this.loading) {
         this.drawTextScreen('Sakana\nLoading...');
@@ -27,6 +27,6 @@ export class Runner {
       } else {
         // game
       }
-    }, msperframe)
+    }, mspf)
   }
 }

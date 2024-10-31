@@ -1,4 +1,4 @@
-export default class Runner {
+export class Runner {
   constructor(Sakana) {
     this.Sakana = Sakana;
     // Game properties

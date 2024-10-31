@@ -2,6 +2,7 @@ import { Runner } from './run.js'
 
 export class Sakana {
   constructor(id) {
+    console.log('[Sakana] Starting Sakana')
     // Game canvas
     const canvas = document.getElementById(id);
     this.canvas = canvas;

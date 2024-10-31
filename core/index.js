@@ -6,6 +6,7 @@ export class Sakana {
     this.canvas = document.getElementById(id);
     this.canvas.width = 1280;
     this.canvas.width = 720;
+    this.ctx = this.canvas.getContext('2d');
     this.game = null;
   }
   load(file) {

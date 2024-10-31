@@ -19,11 +19,12 @@ export class Runner {
   }
   run(code) {
     const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
+    const _this  this;
     setInterval(function(){
-      if (this.loading) {
-        this.drawTextScreen('Sakana\nLoading...');
+      if (_this.loading) {
+        _this.drawTextScreen('Sakana\nLoading...');
       } else if (this.paused) {
-        this.drawTextScreen('Sakana\nPaused');
+        _this.drawTextScreen('Sakana\nPaused');
       } else {
         // game
       }

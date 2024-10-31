@@ -4,6 +4,8 @@ import Runner from './run.js'
 export class Sakana {
   constructor(id) {
     this.canvas = document.getElementById(id);
+    this.canvas.width = 1280;
+    this.canvas.width = 720;
     this.game = null;
   }
   load(file) {

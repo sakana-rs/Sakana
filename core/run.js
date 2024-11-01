@@ -25,12 +25,12 @@ export class Runner {
     this.Sakana.ctx.textBaseline = 'middle';
     this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2 + 24);
   }
-  run() {
+  run(file) {
     const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
     const _this = this;
     setInterval(function(){
       if (_this.loading) {
-        _this.drawTextScreen('Loading...');
+        _this.drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3 + 1);
       } else if (this.paused) {
         _this.drawTextScreen('Paused');
       } else {
@@ -38,7 +38,7 @@ export class Runner {
       }
     }, mspf)
 
-    // 
+    // Decode file
     Decode(file)
   }
   pause() { this.paused = true }

@@ -26,18 +26,20 @@ export function Decode(file, keys) {
     const headerOffset = 16;
 
     for (let i = 0; i<fileCount; i++) {
+      // Data
+      let offset = Number(view.getBigUint64(headerOffset + i * 24, true));
+      let size = Number(view.getBigUint64(headerOffset + i * 24 + 8, true));
+
       // File name
       let nameOffset = view.getUint32(headerOffset + i * 24 + 16, true);
       let nameBytes = new Uint8Array(buffer.slice(stringTableOffset + nameOffset));
       let name = new TextDecoder("utf-8").decode(nameBytes.subarray(0, nameBytes.indexOf(0)));
 
+      // File body
+      let body = new Uint8Array(buffer.slice(offset, offset + size));
+
       // Push file
-      files.push({
-        offset: Number(view.getBigUint64(headerOffset + i * 24, true)),
-        name,
-        size: Number(view.getBigUint64(headerOffset + i * 24 + 8, true)),
-        body: new Uint8Array(buffer.slice(offset, offset + size))
-      });
+      files.push({ offset, name, size, body });
     }
 
     resolve({

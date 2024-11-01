@@ -2,11 +2,13 @@ import './pollyfill.js'
 
 export function Decode(file, keys) {
   return new Promise(async(resolve, reject) => {
+    // TODO: make "big array buffers" or something similar to allow over 2^31 bytes
     let buffer;
     try {
       buffer = await file.arrayBuffer();
     } catch(err) {
-      reject('File too large / corrupted')
+      reject('File too large / corrupted');
+      return;
     }
     const view = new DataView(buffer);
   

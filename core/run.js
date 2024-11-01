@@ -27,12 +27,13 @@ export class Runner {
     this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2 + 24);
   }
   run(file, keys) {
+    console.log('[Sakana] Loading file: '+file.name)
     const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
     const _this = this;
     setInterval(function(){
       if (_this.loading) {
         _this._drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3));
-      } else if (this.paused) {
+      } else if (_this.paused) {
         _this._drawTextScreen('Paused');
       } else {
         // game

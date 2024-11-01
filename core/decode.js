@@ -1,5 +1,3 @@
-import './pollyfill.js'
-
 export function Decode(file, keys) {
   return new Promise(async(resolve, reject) => {
     // TODO: make "big array buffers" or something similar to allow over 2^31 bytes
@@ -19,8 +17,8 @@ export function Decode(file, keys) {
       return;
     }
 
-    // Parse header
-    const fileCount = view.getUint32(4, true); // little-endian
+    // Parse header (little-endian)
+    const fileCount = view.getUint32(4, true);
     const stringTableOffset = view.getUint32(12, true);
 
     // Get files
@@ -28,19 +26,19 @@ export function Decode(file, keys) {
     const headerOffset = 16;
 
     for (let i = 0; i<fileCount; i++) {
+      // File name
+      let nameOffset = view.getUint32(headerOffset + i * 24 + 16, true);
+      let nameBytes = new Uint8Array(buffer.slice(stringTableOffset + nameOffset));
+      let name = new TextDecoder("utf-8").decode(nameBytes.subarray(0, nameBytes.indexOf(0)));
+
+      // Push file
       files.push({
-        offset: view.getUint64(headerOffset + i * 24, true),
-        size: view.getUint64(headerOffset + i * 24 + 8, true),
-        nameOffset: view.getUint32(headerOffset + i * 24 + 16, true)
+        offset: Number(view.getBigUint64(headerOffset + i * 24, true)),
+        name,
+        size: Number(view.getBigUint64(headerOffset + i * 24 + 8, true)),
+        body: new Uint8Array(buffer.slice(offset, offset + size))
       });
     }
-
-    // Extract file names
-    const textDecoder = new TextDecoder("utf-8");
-    files.forEach(file => {
-      let nameBytes = new Uint8Array(buffer.slice(stringTableOffset + file.nameOffset));
-      file.name = textDecoder.decode(nameBytes.subarray(0, nameBytes.indexOf(0)));
-    })
 
     resolve({
       fileCount: fileCount,

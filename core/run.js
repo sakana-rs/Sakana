@@ -25,7 +25,7 @@ export class Runner {
     this.Sakana.ctx.textBaseline = 'middle';
     this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2 + 24);
   }
-  run(file) {
+  run(file, keys) {
     const mspf = 1000 / this.framerate; // Convert from FPS to MsPF (Miliseconds per Frame)
     const _this = this;
     setInterval(function(){
@@ -39,7 +39,7 @@ export class Runner {
     }, mspf)
 
     // Decode file
-    Decode(file)
+    Decode(file, keys)
   }
   pause() { this.paused = true }
   resume() { this.paused = false }

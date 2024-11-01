@@ -16,9 +16,9 @@ export class Sakana {
     this.ctx = canvas.getContext('2d');
     this.game = null;
   }
-  load(file) {
+  load(file, keys) {
     let runner = new Runner(this);
     this.game = runner;
-    runner.run(file)
+    runner.run(file, keys)
   }
 }

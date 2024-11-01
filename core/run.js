@@ -5,10 +5,11 @@ export class Runner {
     this.Sakana = Sakana;
     // Game properties
     this.framerate = 30; // FPS
+    this.data = {};
     this.paused = false;
     this.loading = true;
   }
-  drawTextScreen(text) {
+  _drawTextScreen(text) {
     // Blank out the screen
     this.Sakana.ctx.fillStyle = 'black';
     this.Sakana.ctx.fillRect(0, 0, this.Sakana.width, this.Sakana.height);
@@ -30,9 +31,9 @@ export class Runner {
     const _this = this;
     setInterval(function(){
       if (_this.loading) {
-        _this.drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3));
+        _this._drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3));
       } else if (this.paused) {
-        _this.drawTextScreen('Paused');
+        _this._drawTextScreen('Paused');
       } else {
         // game
       }
@@ -40,6 +41,13 @@ export class Runner {
 
     // Decode file
     Decode(file, keys)
+      .then(data => {
+        this.data = data;
+        this.loading = false;
+      })
+      .catch(err => {
+        console.error('[Sakana] Error while decoding, error: '+err)
+      })
   }
   pause() { this.paused = true }
   resume() { this.paused = false }

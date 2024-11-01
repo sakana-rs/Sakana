@@ -30,7 +30,7 @@ export class Runner {
     const _this = this;
     setInterval(function(){
       if (_this.loading) {
-        _this.drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3 + 1);
+        _this.drawTextScreen('Loading.' + '.'.repeat(Math.floor(Date.now() / 1000) % 3 + 1));
       } else if (this.paused) {
         _this.drawTextScreen('Paused');
       } else {

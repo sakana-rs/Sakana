@@ -8,3 +8,9 @@ body {
   font-family: Arial;
   background-color: var(--bg);
 }
+
+#game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

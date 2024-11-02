@@ -25,7 +25,7 @@ export function Decode(file, keys) {
     // String table
     let stringTable = [];
     let passedStrings = 0;
-    let idx = stringTableOffset+48;
+    let idx = stringTableOffset;
     let constructString = '';
     while (passedStrings<fileCount) {
       let cur = view.getUint8(idx);

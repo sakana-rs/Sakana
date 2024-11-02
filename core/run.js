@@ -36,7 +36,9 @@ export class Runner {
       } else if (_this.paused) {
         _this._drawTextScreen('Paused');
       } else {
-        // game
+        // Temp screen paint
+        _this.Sakana.ctx.fillStyle = '#'+Math.floor(Math.random()*120);
+        _this.Sakana.ctx.fillRect(0, 0, _this.Sakana.width, _this.Sakana.height);
       }
     }, mspf)
 

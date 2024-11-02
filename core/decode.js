@@ -19,11 +19,28 @@ export function Decode(file, keys) {
 
     // Parse header (little-endian)
     const fileCount = view.getUint32(4, true);
-    const stringTableOffset = view.getUint32(12, true);
+    const headerOffset = 16;
+    const stringTableOffset = headerOffset + (24 * fileCount);
+
+    // String table
+    let stringTable = [];
+    let passedStrings = 0;
+    let idx = stringTableOffset+48;
+    let constructString = '';
+    while (passedStrings<fileCount) {
+      let cur = view.getUint8(idx);
+      if (cur == 0) {
+        stringTable.push(constructString);
+        constructString = '';
+        passedStrings += 1;
+      } else {
+        constructString += String.fromCharCode(cur);
+      }
+      idx += 1;
+    }
 
     // Get files
     let files = [];
-    const headerOffset = 16;
 
     for (let i = 0; i<fileCount; i++) {
       // Data
@@ -43,6 +60,7 @@ export function Decode(file, keys) {
     }
 
     resolve({
+      stringTable,
       fileCount: fileCount,
       files: files
     });

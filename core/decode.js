@@ -20,7 +20,9 @@ export function Decode(file, keys) {
     // Parse header (little-endian)
     const fileCount = view.getUint32(4, true);
     const headerOffset = 16;
+    const sizeStringTable = view.getUint32(8, true);
     const stringTableOffset = headerOffset + (24 * fileCount);
+    const dataOffset = stringTableOffset + sizeStringTable;
 
     // String table
     let stringTable = [];
@@ -43,25 +45,24 @@ export function Decode(file, keys) {
     let files = [];
 
     for (let i = 0; i<fileCount; i++) {
-      // Data
-      let offset = Number(view.getBigUint64(headerOffset + i * 24, true));
-      let size = Number(view.getBigUint64(headerOffset + i * 24 + 8, true));
+      const offset = headerOffset + i * 24;
+      const fileOffset = view.getBigUint64(offset, true);
+      const size = view.getBigUint64(offset + 8, true);
+      const filenameOffset = view.getUint32(offset + 16, true);
 
-      // File name
-      let nameOffset = view.getUint32(headerOffset + i * 24 + 16, true);
-      let nameBytes = new Uint8Array(buffer.slice(stringTableOffset + nameOffset));
-      let name = new TextDecoder("utf-8").decode(nameBytes.subarray(0, nameBytes.indexOf(0)));
-
-      // File body
-      let body = new Uint8Array(buffer.slice(offset, offset + size));
-
-      // Push file
-      files.push({ offset, name, size, body });
+      files.push({ offset, fileOffset, size, filenameOffset, name: stringTable[i] });
     }
+
+    files.forEach((file) => {
+      const contentOffset = dataOffset + Number(file.fileOffset);
+      const fileContent = buffer.slice(contentOffset, contentOffset+Number(file.size));
+
+      file.body = fileContent;
+    });
 
     resolve({
       stringTable,
-      fileCount: fileCount,
+      fileCount,
       files: files
     });
   });

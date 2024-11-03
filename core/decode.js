@@ -1,13 +1,5 @@
-export function Decode(file, keys) {
+function DecodeNSP(buffer) {
   return new Promise(async(resolve, reject) => {
-    // TODO: make "big array buffers" or something similar to allow over 2^31 bytes
-    let buffer;
-    try {
-      buffer = await file.arrayBuffer();
-    } catch(err) {
-      reject('File too large / corrupted');
-      return;
-    }
     const view = new DataView(buffer);
   
     // Check magic number "PFS0" for NSP format
@@ -63,7 +55,36 @@ export function Decode(file, keys) {
     resolve({
       stringTable,
       fileCount,
-      files: files
+      files
     });
   });
+}
+
+function DecodeNCA(object, keys) {
+  return object;
+}
+
+export function Decode(file, keys) {
+  return new Promise(async(resolve, reject) => {
+    // TODO: make "big array buffers" or something similar to allow over 2^31 bytes in buffer length
+    let buffer;
+    try {
+      buffer = await file.arrayBuffer();
+    } catch(err) {
+      reject('File too large / corrupted');
+      return;
+    }
+
+    DecodeNSP(buffer)
+      .then(data => {
+        let files = [];
+        data.files.forEach(file => {
+          files.push(DecodeNCA(file, keys));
+        })
+        resolve(data);
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
 }

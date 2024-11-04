@@ -19,6 +19,11 @@ export class Runner {
     this.Sakana.ctx.textAlign = 'center';
     this.Sakana.ctx.textBaseline = 'middle';
     this.Sakana.ctx.fillText('Sakana', this.Sakana.width / 2, this.Sakana.height / 2 - 24);
+    let logo = new Image();
+    logo.onload = function() {
+      ctx.drawImage(logo, this.Sakana.width / 2 - 30, this.Sakana.height / 2 - 24);
+    }
+    logo.src = "./core/sakana.svg";
     // Write text
     this.Sakana.ctx.fillStyle = 'white';
     this.Sakana.ctx.font = '24px Arial';

@@ -22,14 +22,14 @@ export class Runner {
     this.Sakana.ctx.font = '48px Arial';
     this.Sakana.ctx.textAlign = 'center';
     this.Sakana.ctx.textBaseline = 'middle';
-    this.Sakana.ctx.fillText('Sakana', this.Sakana.width / 2, this.Sakana.height / 2 - 24);
-    this.Sakana.ctx.drawImage(this._logo, this.Sakana.width / 2 - 125, this.Sakana.height / 2 - 43);
+    this.Sakana.ctx.fillText('Sakana', this.Sakana.width / 2 + 20, this.Sakana.height / 2 - 20);
+    this.Sakana.ctx.drawImage(this._logo, this.Sakana.width / 2 - 120, this.Sakana.height / 2 - 50);
     // Write text
     this.Sakana.ctx.fillStyle = 'white';
     this.Sakana.ctx.font = '24px Arial';
     this.Sakana.ctx.textAlign = 'center';
     this.Sakana.ctx.textBaseline = 'middle';
-    this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2 + 24);
+    this.Sakana.ctx.fillText(text, this.Sakana.width / 2, this.Sakana.height / 2 + 20);
   }
   run(file, keys) {
     console.log('[Sakana] Loading file: '+file.name)

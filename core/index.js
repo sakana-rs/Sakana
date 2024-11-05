@@ -17,7 +17,7 @@ export class Sakana {
     this.game = null;
   }
   load(file, keys) {
-    let runner = new Runner(this);
+    let runner = this.game ?? new Runner(this);
     this.game = runner;
     runner.run(file, keys)
   }

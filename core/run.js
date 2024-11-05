@@ -23,7 +23,11 @@ export class Runner {
     this.Sakana.ctx.textAlign = 'center';
     this.Sakana.ctx.textBaseline = 'middle';
     this.Sakana.ctx.fillText('Sakana', this.Sakana.width / 2 + 20, this.Sakana.height / 2 - 20);
-    this.Sakana.ctx.drawImage(this._logo, this.Sakana.width / 2 - 120, this.Sakana.height / 2 - 50);
+    this.Sakana.ctx.save();
+    this.Sakana.ctx.translate(this.Sakana.width / 2 - 90, this.Sakana.height / 2 - 25);
+    this.Sakana.ctx.rotate((Date.now()/5)%360 * Math.PI / 180);
+    this.Sakana.ctx.drawImage(this._logo, -this._logo.width/2, -this._logo.height/2, 50, 50);
+    this.Sakana.ctx.restore(); 
     // Write text
     this.Sakana.ctx.fillStyle = 'white';
     this.Sakana.ctx.font = '24px Arial';

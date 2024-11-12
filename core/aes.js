@@ -10,8 +10,21 @@ function gfMulX(tweak) {
 }
 
 function aesEcbDecrypt(key, data) {
-  // insert aes ecb encryption
-  return;
+  let ikey = crypto.subtle.importKey(
+    "raw", 
+    key, 
+    { name: "AES-ECB" },
+    false, 
+    ["decrypt"]
+  );
+
+  const decryptedData = crypto.subtle.decrypt(
+    { name: "AES-ECB" },
+    ikey,
+    data
+  );
+
+  return decryptedData;
 }
 
 export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {

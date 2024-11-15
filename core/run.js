@@ -46,7 +46,7 @@ export class Runner {
         _this._drawTextScreen('Paused');
       } else {
         // Temp screen paint
-        _this.Sakana.ctx.fillStyle = '#'+Math.floor(Math.random()*120);
+        _this.Sakana.ctx.fillStyle = '#000';
         _this.Sakana.ctx.fillRect(0, 0, _this.Sakana.width, _this.Sakana.height);
       }
     }, mspf)

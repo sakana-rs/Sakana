@@ -1,3 +1,5 @@
+import { aesXtsDecrypt } from './aes.js'
+
 function DecodeNSP(buffer) {
   return new Promise(async(resolve, reject) => {
     const view = new DataView(buffer);

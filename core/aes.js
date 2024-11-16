@@ -55,7 +55,7 @@ export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
   let result = new Uint8Array(ciphertext.length);
 
   let tweak = new Uint8Array(blockSize);
-  tweak.set(aesEcbEncrypt(key2, new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer)));
+  tweak.set(aesEcbEncrypt(key2, aesjs.utils.utf8.fromBytes(new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer))));
 
   for (let i = 0; i < blocks; i++) {
     let block = ciphertext.slice(i * blockSize, (i + 1) * blockSize);

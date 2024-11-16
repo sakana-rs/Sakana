@@ -72,7 +72,7 @@ function DecodeNCA(file, keys) {
 
     // Parse the NCA header
     const headerEnc = buffer.slice(0, headerSize);
-    const headerDec = aesXtsDecrypt(headerEnc, key1, key2, 0);
+    const headerDec = await aesXtsDecrypt(headerEnc, key1, key2, 0);
     const headerView = new DataView(headerDec);
 
     // Validate magic number

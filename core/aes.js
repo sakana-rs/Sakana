@@ -9,7 +9,26 @@ function gfMulX(tweak) {
   return tweak;
 }
 
-function aesEcbDecrypt(key, data) {
+async function aesEcbEncrypt(key, data) {
+  // Import the encryption key
+  let ikey = crypto.subtle.importKey(
+    "raw", 
+    key, 
+    { name: "AES-ECB" },
+    false, 
+    ["encrypt"]
+  );
+
+  const encryptedData = await crypto.subtle.encrypt(
+    { name: "AES-ECB" },
+    ikey,
+    plainTextBuffer
+  );
+
+  return encryptedData;
+}
+
+async function aesEcbDecrypt(key, data) {
   let ikey = crypto.subtle.importKey(
     "raw", 
     key, 
@@ -18,7 +37,7 @@ function aesEcbDecrypt(key, data) {
     ["decrypt"]
   );
 
-  const decryptedData = crypto.subtle.decrypt(
+  const decryptedData = await crypto.subtle.decrypt(
     { name: "AES-ECB" },
     ikey,
     data
@@ -27,13 +46,13 @@ function aesEcbDecrypt(key, data) {
   return decryptedData;
 }
 
-export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
+export async function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
   const blockSize = 16;
   const blocks = Math.ceil(ciphertext.length / blockSize);
   let result = new Uint8Array(ciphertext.length);
 
   let tweak = new Uint8Array(blockSize);
-  tweak.set(aesEcbEncrypt(key2, new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer)));
+  tweak.set(await aesEcbEncrypt(key2, new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer)));
 
   for (let i = 0; i < blocks; i++) {
     let block = ciphertext.slice(i * blockSize, (i + 1) * blockSize);
@@ -46,7 +65,7 @@ export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
       block[j] ^= tweak[j];
     }
 
-    let decryptedBlock = aesEcbDecrypt(key1, block);
+    let decryptedBlock = await aesEcbDecrypt(key1, block);
 
     for (let j = 0; j < blockSize; j++) {
       decryptedBlock[j] ^= tweak[j];
@@ -58,10 +77,3 @@ export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
   }
   return result;
 }
-
-/*
-const ciphertext = new Uint8Array([]);
-const key1 = new Uint8Array(16);
-const key2 = new Uint8Array(16);
-
-aesXtsDecrypt(ciphertext, key1, key2, 0);*/

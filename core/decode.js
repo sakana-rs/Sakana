@@ -72,7 +72,9 @@ function DecodeNCA(file, keys) {
     let key2 = keys.header_key.slice(32,64);
 
     // Parse the NCA header
-    const headerEnc = buffer.slice(0, headerSize);
+    let headerEnc = buffer.slice(0, headerSize);
+    const headerDecoder = new TextDecoder('utf-8');
+    headerEnc = headerDecoder.decode(headerEnc);
     const headerDec = aesXtsDecrypt(headerEnc, key1, key2, 0);
     const headerView = new DataView(headerDec);
 

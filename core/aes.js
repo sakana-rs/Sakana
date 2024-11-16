@@ -78,5 +78,6 @@ export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
 
     tweak = gfMulX(tweak);
   }
+
   return result;
 }

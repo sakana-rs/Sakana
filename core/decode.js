@@ -62,11 +62,43 @@ function DecodeNSP(buffer) {
   });
 }
 
-function DecodeNCA(object, keys) {
-  return object;
+function DecodeNCA(file, keys) {
+  return new Promise(async(resolve, reject) => {
+    const buffer = file.body;
+    const headerSize = 0x400;
+
+    let key1 = keys.header_key.slice(0,16);
+    let key2 = keys.header_key.slice(16,32);
+
+    // Parse the NCA header
+    const headerEnc = buffer.slice(0, headerSize);
+    const headerDec = aesXtsDecrypt(headerEnc, key1, key2, 0);
+    const headerView = new DataView(headerDec);
+
+    // Validate magic number
+    const magicNumber = headerDec.slice(0x100, 0x104).toString();
+    if (magicNumber !== 'NCA3') {
+      reject('Invalid file');
+    }
+
+    // Parse the header fields
+    const header = {
+      distType: headerDec[0x104],
+      contentType: headerDec[0x105],
+      keyGenerationOld: headerDec[0x106],
+      keyAreaEncryptionKeyIndex: headerDec[0x107],
+      contentSize: headerView.getUint32(0x108, true),
+      programId: headerView.getBigInt64(0x10C, true),
+      contentIndex: headerView.getUint32(0x114, true),
+      rightsId: headerDec.slice(0x120, 0x130)
+    };
+
+    console.log("Parsed NCA Header:", header);
+    resolve(header);
+  });
 }
 
-export function Decode(file, keys) {
+export function Decode(file, keyFile) {
   return new Promise(async(resolve, reject) => {
     // TODO: make "big array buffers" or something similar to allow over 2^31 bytes in buffer length
     let buffer;
@@ -79,11 +111,23 @@ export function Decode(file, keys) {
 
     DecodeNSP(buffer)
       .then(data => {
-        let files = [];
-        data.files.forEach(file => {
-          files.push(DecodeNCA(file, keys));
-        })
-        resolve(data);
+        let keyReader = new FileReader();
+        keyReader.onload = (evt) => {
+          let keys = {};
+          evt.target.result
+            .split('\n')
+            .map(key => {
+              let k = key.split(' = ');
+              keys[k[0]] = k[1];
+            });
+
+          let files = [];
+          data.files.forEach(file => {
+            files.push(DecodeNCA(file, keys));
+          })
+          resolve(data);
+        };
+        keyReader.readAsText(keyFile);
       })
       .catch(err => {
         reject(err)

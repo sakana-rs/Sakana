@@ -68,8 +68,8 @@ function DecodeNCA(file, keys) {
     const buffer = file.body;
     const headerSize = 0x400;
 
-    let key1 = keys.header_key.slice(0,16);
-    let key2 = keys.header_key.slice(16,32);
+    let key1 = keys.header_key.slice(0,32);
+    let key2 = keys.header_key.slice(32,64);
 
     // Parse the NCA header
     const headerEnc = buffer.slice(0, headerSize);

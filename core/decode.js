@@ -63,6 +63,7 @@ function DecodeNSP(buffer) {
 }
 
 function DecodeNCA(file, keys) {
+  console.log('[Sakana] Loading nca: '+file.name);
   return new Promise(async(resolve, reject) => {
     const buffer = file.body;
     const headerSize = 0x400;

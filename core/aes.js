@@ -9,20 +9,34 @@ function gfMulX(tweak) {
   return tweak;
 }
 
+function hexToBuffer(hexString) {
+  if (hexString.length % 2 !== 0) {
+    throw new Error('Invalid hex string');
+  }
+
+  let byteArray = new Uint8Array(hexString.length / 2);
+
+  for (let i = 0; i < hexString.length; i += 2) {
+    byteArray[i / 2] = parseInt(hexString[i] + hexString[i + 1], 16);
+  }
+
+  return byteArray.buffer;
+}
+
 async function aesEcbEncrypt(key, data) {
   // Import the encryption key
   let ikey = crypto.subtle.importKey(
-    "raw", 
-    key, 
+    "raw",
+    hexToBuffer(key),
     { name: "AES-ECB" },
-    false, 
+    false,
     ["encrypt"]
   );
 
   const encryptedData = await crypto.subtle.encrypt(
     { name: "AES-ECB" },
     ikey,
-    plainTextBuffer
+    data
   );
 
   return encryptedData;
@@ -30,10 +44,10 @@ async function aesEcbEncrypt(key, data) {
 
 async function aesEcbDecrypt(key, data) {
   let ikey = crypto.subtle.importKey(
-    "raw", 
-    key, 
+    "raw",
+    hexToBuffer(key),
     { name: "AES-ECB" },
-    false, 
+    false,
     ["decrypt"]
   );
 

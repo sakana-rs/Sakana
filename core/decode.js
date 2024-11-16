@@ -3,7 +3,7 @@ import { aesXtsDecrypt } from './aes.js'
 function DecodeNSP(buffer) {
   return new Promise(async(resolve, reject) => {
     const view = new DataView(buffer);
-  
+
     // Check magic number "PFS0" for NSP format
     const magicNumber = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3));
     if (magicNumber !== "PFS0") {
@@ -73,7 +73,7 @@ function DecodeNCA(file, keys) {
 
     // Parse the NCA header
     const headerEnc = buffer.slice(0, headerSize);
-    const headerDec = await aesXtsDecrypt(headerEnc, key1, key2, 0);
+    const headerDec = aesXtsDecrypt(headerEnc, key1, key2, 0);
     const headerView = new DataView(headerDec);
 
     // Validate magic number

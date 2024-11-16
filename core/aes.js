@@ -1,3 +1,9 @@
+import { aesjs as aesjsF } from './lib/aes-js.js'
+
+let aesjs = {};
+aesjsF(aesjs);
+aesjs = aesjs.aesjs;
+
 function gfMulX(tweak) {
   const POLY = 0x87;
   let carry = (tweak[15] & 0x80) ? 1 : 0;
@@ -23,50 +29,33 @@ function hexToBuffer(hexString) {
   return byteArray.buffer;
 }
 
-async function aesEcbEncrypt(key, data) {
-  // Import the encryption key
-  let ikey = crypto.subtle.importKey(
-    "raw",
-    hexToBuffer(key),
-    { name: "AES-ECB" },
-    false,
-    ["encrypt"]
-  );
+function aesEcbEncrypt(key, data) {
+  let keyBytes = aesjs.utils.hex.toBytes(key);
+  let dataBytes = aesjs.utils.utf8.toBytes(data);
 
-  const encryptedData = await crypto.subtle.encrypt(
-    { name: "AES-ECB" },
-    ikey,
-    data
-  );
+  let aesEcb = new aesjs.ModeOfOperation.ecb(keyBytes);
+  let encryptedBytes = aesEcb.encrypt(dataBytes);
 
-  return encryptedData;
+  return aesjs.utils.utf8.fromBytes(encryptedBytes);
 }
 
-async function aesEcbDecrypt(key, data) {
-  let ikey = crypto.subtle.importKey(
-    "raw",
-    hexToBuffer(key),
-    { name: "AES-ECB" },
-    false,
-    ["decrypt"]
-  );
+function aesEcbDecrypt(key, data) {
+  let keyBytes = aesjs.utils.hex.toBytes(key);
+  let dataBytes = aesjs.utils.utf8.toBytes(data);
 
-  const decryptedData = await crypto.subtle.decrypt(
-    { name: "AES-ECB" },
-    ikey,
-    data
-  );
+  let aesEcb = new aesjs.ModeOfOperation.ecb(keyBytes);
+  let decryptedBytes = aesEcb.decrypt(dataBytes);
 
-  return decryptedData;
+  return aesjs.utils.utf8.fromBytes(decryptedBytes);
 }
 
-export async function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
+export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
   const blockSize = 16;
   const blocks = Math.ceil(ciphertext.length / blockSize);
   let result = new Uint8Array(ciphertext.length);
 
   let tweak = new Uint8Array(blockSize);
-  tweak.set(await aesEcbEncrypt(key2, new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer)));
+  tweak.set(aesEcbEncrypt(key2, new Uint8Array(new Uint32Array([0, 0, 0, sectorIndex]).buffer)));
 
   for (let i = 0; i < blocks; i++) {
     let block = ciphertext.slice(i * blockSize, (i + 1) * blockSize);
@@ -79,7 +68,7 @@ export async function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
       block[j] ^= tweak[j];
     }
 
-    let decryptedBlock = await aesEcbDecrypt(key1, block);
+    let decryptedBlock = aesEcbDecrypt(key1, block);
 
     for (let j = 0; j < blockSize; j++) {
       decryptedBlock[j] ^= tweak[j];

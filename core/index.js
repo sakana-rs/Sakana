@@ -7,8 +7,8 @@ export class Sakana {
     // Game canvas
     const canvas = document.createElement('canvas');
     this.canvas = canvas;
-    this.width = 1280;
-    this.height = 720;
+    this._width = 1280;
+    this._height = 720;
     canvas.width = 1280;
     canvas.height = 720;
     this.root.appendChild(canvas);
@@ -16,14 +16,20 @@ export class Sakana {
     this.ctx = canvas.getContext('2d');
     this.game = null;
   }
+  get width() {
+    return this._width;
+  }
   set width(number) {
     number = Number(number);
-    this.width = number;
+    this._width = number;
     this.canvas.width = number;
+  }
+  get height() {
+    return this._height;
   }
   set height(number) {
     number = Number(number);
-    this.height = number;
+    this._height = number;
     this.canvas.height = number;
   }
   load(file, keys) {

@@ -69,6 +69,7 @@ export function aesXtsDecrypt(ciphertext, key1, key2, sectorIndex) {
     }
 
     let decryptedBlock = aesEcbDecrypt(key1, aesjs.utils.utf8.fromBytes(block));
+    decryptedBlock = aesjs.utils.utf8.toBytes(decryptedBlock);
 
     for (let j = 0; j < blockSize; j++) {
       decryptedBlock[j] ^= tweak[j];

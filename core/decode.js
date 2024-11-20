@@ -80,6 +80,7 @@ function DecodeNCA(file, keys) {
     // Validate magic number
     const magicNumber = headerDec.slice(0x100, 0x104).toString();
     if (magicNumber !== 'NCA3') {
+      if (['NCA0', 'NCA2'].includes(magicNumber)) reject('Only NCA3 is supported, recived: '+magicNumber);
       reject('Invalid file');
     }
 

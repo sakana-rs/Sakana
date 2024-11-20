@@ -16,6 +16,16 @@ export class Sakana {
     this.ctx = canvas.getContext('2d');
     this.game = null;
   }
+  set width(number) {
+    number = Number(number);
+    this.width = number;
+    this.canvas.width = number;
+  }
+  set height(number) {
+    number = Number(number);
+    this.height = number;
+    this.canvas.height = number;
+  }
   load(file, keys) {
     let runner = this.game ?? new Runner(this);
     this.game = runner;

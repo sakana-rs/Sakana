@@ -15,6 +15,11 @@ body {
   justify-content: center;
 }
 
+#game svg {
+  width: 100%;
+  aspect-ratio: 1280 / 720;
+}
+
 input, button {
   color: var(--text);
   margin: 0px;

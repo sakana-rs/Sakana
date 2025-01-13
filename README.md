@@ -1,5 +1,5 @@
 # :warning: Under development!
-We still are making sakana, please be patient, find our roadmap at [#1](https://github.com/inventionpro/Sakana/issues/1).
+We still are making sakana, please be patient, find our roadmap at [#1](https://github.com/sakana-rs/Sakana/issues/1).
 
 > [!IMPORTANT]
 > Sakana is not affiliated with Nintendo :tm: or Switch :tm:\
@@ -23,4 +23,4 @@ And it has a easy to use api.
 ```js
 emulator.game.pause();
 ```
-Find more info in the [wiki](https://github.com/inventionpro/Sakana/wiki/Sakana-API).
+Find more info in the [wiki](https://sakana-rs.github.io/Docs/sakana/api).

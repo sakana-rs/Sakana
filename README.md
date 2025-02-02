@@ -23,4 +23,4 @@ And it has a easy to use api.
 ```js
 emulator.game.pause();
 ```
-Find more info in the [wiki](https://github.com/inventionpro/Sakana/wiki/Sakana-API).
+Find more info in the [wiki](https://sakana-rs.github.io/Docs/sakana/api).

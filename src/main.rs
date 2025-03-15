@@ -23,7 +23,8 @@ fn main() {
             pfs0.read_file(idx, 0, &mut file_buf).unwrap();
 
             let nca_reader = cntx::util::new_shared(Cursor::new(file_buf));
-            let mut nca = cntx::nca::NCA::new(nca_reader, &keyset, None).unwrap();
+            #[allow(unused_variables)]
+            let nca = cntx::nca::NCA::new(nca_reader, &keyset, None).unwrap();
         }
 
         idx += 1;
